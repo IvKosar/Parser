@@ -20,7 +20,16 @@ public class Parser {
         // create parser object
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("a[class*=paginator-catalog-l-link]");
-        System.out.println(links);
+        int len = links.size();
+        int num = Integer.parseInt(links.get(len-1).text());
+        for (int i=0; i<num; i++){
+            String pg = url + "page=" + Integer.toString(i + 1) + "/";
+            parseCategoryPage(pg);
+        }
+
+        //int pages_num = links[-1].;
+
+
     }
 
     public static String readHtmlPage(String url) throws IOException{
@@ -34,5 +43,24 @@ public class Parser {
         in.close();
 
         return content;
+    }
+
+    public static void parseCategoryPage(String url)throws IOException{
+        String html = readHtmlPage(url);
+        Document doc = Jsoup.parse(html);
+
+        Elements products = doc.select("div[class*=g-i-tile-i-title]");
+        int size = products.size();
+        for (int i=0;i<size;i++){
+            String linkHref = products.get(i).select("a").first().attr("href");
+            parseReviews(linkHref + "comments/");
+        }
+    }
+
+    public static void parseReviews(String url){
+        String html = readHtmlPage(url);
+        Document doc = Jsoup.parse(html);
+
+
     }
 }
