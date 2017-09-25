@@ -1,0 +1,1 @@
+This project is created to parse all reviews on washing machines and find the most reviewed one
