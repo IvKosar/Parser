@@ -26,5 +26,8 @@ hs_err_pid*
 .idea
 src/main/resources/
 src/test/
-pom.xml
+workspace.xml
 HW_2.iml
+bar.iml
+target/classes/
+target/generated-sources/
