@@ -10,13 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class ReviewsPagesParser extends PageParser{
+    private static final String BASE_DIR = System.getProperty("user.dir") + '/';
+
     private class ArrayListToFileWriter{
         public String filename;
         private PrintWriter writer;
 
         public ArrayListToFileWriter(String f) throws FileNotFoundException, UnsupportedEncodingException {
             filename = f;
-            writer = new PrintWriter(filename, "UTF-8");
+            writer = new PrintWriter(BASE_DIR + filename, "UTF-8");
         }
 
         public void write(ArrayList data){
