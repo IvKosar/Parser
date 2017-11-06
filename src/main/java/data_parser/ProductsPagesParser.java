@@ -15,17 +15,36 @@ public class ProductsPagesParser extends PageParser {
     }
 
     public MutableTuple parse() throws IOException{
-        Elements links = this.document.select(this.query);
-        int linksNumber = links.size();
-        int pagesNumber = Integer.parseInt(links.get(linksNumber-1).text());
+        int recursionCounter = 0;
+        MutableTuple mostReviewed = helper(this.url, this.query, recursionCounter);
+        return mostReviewed;
+    }
+
+    private MutableTuple helper(String url, String query, int recursionCounter) throws IOException{
+        Elements links = this.document.select(query);
+        int elementsNumber;
+        if (recursionCounter == 0){
+            int linksNumber = links.size();
+            elementsNumber = Integer.parseInt(links.get(linksNumber-1).text());
+        }
+        else{
+            elementsNumber = links.size();
+        }
 
         int mostReviewedReviewsCount = 0;
         MutableTuple mostReviewed = new MutableTuple();
         MutableTuple current = new MutableTuple();
-        for (int i=0; i<pagesNumber; i++){
-            String pageUrl = this.url + "page=" + Integer.toString(i + 1) + "/";
-            ProductsPageParser categoryPageParser = new ProductsPageParser(pageUrl);
-            current = categoryPageParser.parse();
+        for (int i=0; i<elementsNumber; i++){
+            String Url;
+            if (recursionCounter == 0){
+                Url = this.url + "page=" + Integer.toString(i + 1) + "/";
+                mostReviewed = helper(Url, pageQuery, 1);
+            }
+            else{
+                Url = links.get(i).select("a").first().attr("href") + "comments/";
+                ReviewsPagesParser reviewsPagesParser = new ReviewsPagesParser(Url);
+                current = reviewsPagesParser.parse();
+            }
             if ((Integer)current.second > mostReviewedReviewsCount){
                 mostReviewedReviewsCount = (Integer) current.second;
                 mostReviewed = current;
