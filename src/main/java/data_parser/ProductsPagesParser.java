@@ -35,6 +35,6 @@ public class ProductsPagesParser extends PageParser {
     }
 
     public void generateReport(MutableTuple mostReviewed) throws IOException{
-        System.out.println(String.format("Most reviewed product is %s with %d reviews", mostReviewed.first, (Integer)mostReviewed.second));
+        System.out.println(String.format("Most reviewed product: %s with %d reviews", mostReviewed.first, (Integer)mostReviewed.second));
     }
 }
